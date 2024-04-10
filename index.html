@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <img src="/img" alt="image" />
+    <button type="button">Login</button>
+  </body>
+
+  <script>
+    const getCookie = () => {
+      // Getting the cookie and parsing from the browser
+      const cookieString = document.cookie;
+      const cookies = cookieString?.split(";");
+      return cookies
+        .find((cookie) => {
+          const cookieName = cookie?.trim()?.split?.("=")?.[0];
+          if (cookieName === "imageCookie") return true;
+          return false;
+        })?.[1]
+        ?.trim();
+    };
+    const button = document.getElementsByTagName("button")[0];
+    const cookieName = getCookie();
+
+    // TOggle UI
+    if (cookieName) {
+      button.hidden = true;
+      button.style.display = "none";
+      button.style.pointerEvents = "none";
+    } else {
+      button.hidden = false;
+      button.style.display = "block";
+      button.style.pointerEvents = "all";
+    }
+
+
+    // Login Api call
+    button.addEventListener("click", () => {
+      fetch("/login", {
+        method: "POST",
+      })
+        .then((res) => {
+          if (res.ok) {
+            alert("Received Cache");
+          } else {
+            console.log(res);
+            throw new Error(res);
+          }
+        })
+        .catch((err) => console.error("No Cache", err));
+    });
+  </script>
+</html>
